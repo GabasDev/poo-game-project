@@ -1,5 +1,8 @@
 import pygame
-from src.classes import Pokemon, Pokebola, Jogador, Mapa
+from .pokemon import Pokemon
+from .pokebola import Pokebola
+from .jogador import Jogador
+from .mapa import Mapa
 
 class Jogo:
     def __init__(self):
