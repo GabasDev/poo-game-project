@@ -1,11 +1,17 @@
 import pygame
-from .pokemon import Pokemon
-from .pokebola import Pokebola
-from .jogador import Jogador
-from .mapa import Mapa
+from src.jogador import Jogador
+from src.mapa import Mapa
+from src.pokemon import Pokemon
+from src.pokebola import Pokebola
+import random
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 class Jogo:
     def __init__(self):
+        self.tela = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Capturador de Pokémon")
         self.mapa = Mapa()
         self.jogador = Jogador()
         self.pokemons = pygame.sprite.Group()
@@ -17,14 +23,17 @@ class Jogo:
         self.max_pokemons = 20
         self.chances = 3
         self.jogo_ativo = True
+        self.pokemons_visiveis = []  
         self.adicionar_pokemon(1)
 
     def adicionar_pokemon(self, quantidade):
-        for _ in range(quantidade):
-            if len(self.pokemons) < self.max_pokemons:
-                novo_pokemon = Pokemon()
-                self.pokemons.add(novo_pokemon)
-                self.todos_sprites.add(novo_pokemon)
+        if len(self.pokemons) < self.max_pokemons:
+            for _ in range(quantidade):
+                if len(self.pokemons) < self.max_pokemons:
+                    novo_pokemon = Pokemon()
+                    self.pokemons.add(novo_pokemon)
+                    self.todos_sprites.add(novo_pokemon)
+                    self.pokemons_visiveis.append(novo_pokemon)
 
     def processar_eventos(self):
         for evento in pygame.event.get():
@@ -43,6 +52,12 @@ class Jogo:
                 pokebola = Pokebola(self.jogador.rect.x, self.jogador.rect.y, dx, dy)
                 self.pokebolas.add(pokebola)
                 self.todos_sprites.add(pokebola)
+                
+            if not self.jogo_ativo and evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_r:  
+                    self.__init__()
+                elif evento.key == pygame.K_q: 
+                    return True
         return False
 
     def executar_logica(self):
@@ -56,7 +71,7 @@ class Jogo:
                 pokemons_atingidos = pygame.sprite.spritecollide(pokebola, self.pokemons, True)
                 if pokemons_atingidos:
                     self.pontuacao += 1
-                    if len(self.pokemons) < self.max_pokemons:
+                    if len(self.pokemons) == 0:
                         self.adicionar_pokemon(2)
                     pokebola.kill()
                 else:
@@ -73,8 +88,8 @@ class Jogo:
     def mostrar_frame(self, tela):
         self.mapa.desenhar(tela)
         self.todos_sprites.draw(tela)
-        texto_pontuacao = self.fonte.render("Pontuação: " + str(self.pontuacao), True, (0, 0, 0))
-        texto_chances = self.fonte.render("Chances: " + str(self.chances), True, (0, 0, 0))
+        texto_pontuacao = self.fonte.render("Pontuação: " + str(self.pontuacao), True, BLACK)
+        texto_chances = self.fonte.render("Chances: " + str(self.chances), True, BLACK)
         tela.blit(texto_pontuacao, [10, 10])
         tela.blit(texto_chances, [10, 40])
 
@@ -83,7 +98,10 @@ class Jogo:
                 mensagem = "Parabéns! Você capturou todos os Pokémon!"
             else:
                 mensagem = "Game Over! Você ficou sem chances."
-            texto_final = self.fonte.render(mensagem, True, (0, 0, 0))
+            texto_final = self.fonte.render(mensagem, True, BLACK)
             tela.blit(texto_final, [400 - texto_final.get_width() // 2, 300 - texto_final.get_height() // 2])
+
+            mensagem_reiniciar = self.fonte.render("Pressione R para tentar novamente ou Q para sair.", True, BLACK)
+            tela.blit(mensagem_reiniciar, [400 - mensagem_reiniciar.get_width() // 2, 350 - mensagem_reiniciar.get_height() // 2])
 
         pygame.display.flip()

@@ -3,10 +3,10 @@ from src.jogo import Jogo
 
 def principal():
     pygame.init()
-    LARGURA_TELA = 800
-    ALTURA_TELA = 600
-    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
-    pygame.display.set_caption("Captura de Pokémon")
+    pygame.mixer.init()  
+
+    pygame.mixer.music.load('static/sons/musica_fundo.mp3')
+    pygame.mixer.music.play(-1) 
     clock = pygame.time.Clock()
     jogo = Jogo()
 
@@ -14,7 +14,7 @@ def principal():
     while not terminado:
         terminado = jogo.processar_eventos()
         jogo.executar_logica()
-        jogo.mostrar_frame(tela)
+        jogo.mostrar_frame(jogo.tela)
         clock.tick(60)
 
     pygame.quit()

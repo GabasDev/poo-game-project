@@ -3,8 +3,12 @@ import pygame
 class Pokebola(pygame.sprite.Sprite):
     def __init__(self, x, y, dx, dy):
         super().__init__()
-        self.image = pygame.Surface([10, 10])
-        self.image.fill((0, 0, 255))  # Azul
+        imagem_original = pygame.image.load('static/imagens/pokebola.png').convert_alpha()
+        
+        largura_nova = 20  
+        altura_nova = 20   
+        
+        self.image = pygame.transform.scale(imagem_original, (largura_nova, altura_nova))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
