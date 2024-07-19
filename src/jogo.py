@@ -28,7 +28,6 @@ class Jogo:
             if evento.type == pygame.QUIT:
                 return True
             if self.jogo_ativo and evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE:
-                # Calcula a direção da Pokébola baseada na posição do jogador
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 dx = mouse_x - self.jogador.rect.x
                 dy = mouse_y - self.jogador.rect.y
