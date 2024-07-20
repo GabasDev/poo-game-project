@@ -7,10 +7,12 @@ import random
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)  # Usando uma cor mais forte para a sombra
 
 class Jogo:
     def __init__(self):
+        pygame.init()
+        pygame.mixer.init() 
+        
         self.tela = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Capturador de Pokémon")
         self.mapa = Mapa()
@@ -20,12 +22,17 @@ class Jogo:
         self.todos_sprites = pygame.sprite.Group()
         self.todos_sprites.add(self.jogador)
         self.pontuacao = 0
-        self.fonte = pygame.font.SysFont('Arial', 30, bold=True)  # Fonte mais grossa
+        self.fonte = pygame.font.SysFont('Arial', 30, bold=True)  
         self.max_pokemons = 20
         self.chances = 3
         self.jogo_ativo = True
         self.pokemons_visiveis = []  
         self.adicionar_pokemon(1)
+        
+        try:
+            self.som_captura = pygame.mixer.Sound('static/sons/song.mp3')
+        except pygame.error as e:
+            print(f"Erro ao carregar o som: {e}")
 
     def adicionar_pokemon(self, quantidade):
         if len(self.pokemons) < self.max_pokemons:
@@ -50,10 +57,16 @@ class Jogo:
                 dx *= 10
                 dy *= 10
 
+                self.jogador.arremessar() 
+                
                 pokebola = Pokebola(self.jogador.rect.x, self.jogador.rect.y, dx, dy)
                 self.pokebolas.add(pokebola)
                 self.todos_sprites.add(pokebola)
                 
+                pygame.time.set_timer(pygame.USEREVENT + 1, 300)  
+
+            if evento.type == pygame.USEREVENT + 1:
+                self.jogador.voltar_a_segurar() 
             if not self.jogo_ativo and evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_r:  
                     self.__init__()
@@ -72,6 +85,8 @@ class Jogo:
                 pokemons_atingidos = pygame.sprite.spritecollide(pokebola, self.pokemons, True)
                 if pokemons_atingidos:
                     self.pontuacao += 1
+                    if hasattr(self, 'som_captura'):
+                        self.som_captura.play()  
                     if len(self.pokemons) == 0:
                         self.adicionar_pokemon(2)
                     pokebola.kill()
@@ -87,10 +102,8 @@ class Jogo:
                 self.jogo_ativo = False
 
     def renderizar_texto(self, texto, cor, sombra_cor, pos_x, pos_y):
-        # Desenha a sombra
         sombra_texto = self.fonte.render(texto, True, sombra_cor)
         self.tela.blit(sombra_texto, (pos_x + 2, pos_y + 2))
-        # Desenha o texto principal
         texto_final = self.fonte.render(texto, True, cor)
         self.tela.blit(texto_final, (pos_x, pos_y))
 
@@ -98,10 +111,8 @@ class Jogo:
         self.mapa.desenhar(tela)
         self.todos_sprites.draw(tela)
 
-        # Pontuação com borda e sombra
         self.renderizar_texto("Pontuação: " + str(self.pontuacao), WHITE, BLACK, 10, 10)
         
-        # Chances com borda e sombra
         self.renderizar_texto("Chances: " + str(self.chances), WHITE, BLACK, 10, 40)
 
         if not self.jogo_ativo:
@@ -110,10 +121,8 @@ class Jogo:
             else:
                 mensagem = "Game Over! Você ficou sem chances."
 
-            # Mensagem final com borda e sombra
             self.renderizar_texto(mensagem, WHITE, BLACK, 400 - self.fonte.size(mensagem)[0] // 2, 300 - self.fonte.size(mensagem)[1] // 2)
 
-            # Mensagem de reiniciar ou sair com borda e sombra
             mensagem_reiniciar = "Pressione R para tentar novamente ou Q para sair."
             self.renderizar_texto(mensagem_reiniciar, WHITE, BLACK, 400 - self.fonte.size(mensagem_reiniciar)[0] // 2, 350 - self.fonte.size(mensagem_reiniciar)[1] // 2)
 
