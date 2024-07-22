@@ -24,7 +24,7 @@ class Jogo:
         self.todos_sprites.add(self.jogador)
         self.pontuacao = 0
         self.fonte = pygame.font.SysFont('Arial', 30, bold=True)
-        self.tempoMaximo = 30  # Tempo máximo em segundos
+        self.tempoMaximo = 60  # Tempo máximo em segundos
         self.tempo_inicial = pygame.time.get_ticks()  # Tempo inicial
         self.tempo_restante = self.tempoMaximo * 1000  # Tempo restante em milissegundos
         self.chance = Chance()
@@ -123,8 +123,8 @@ class Jogo:
         self.mapa.desenhar(self.tela)
         self.todos_sprites.draw(self.tela)
 
-        self.renderizar_texto("Pontuação: " + str(self.pontuacao), WHITE, BLACK, 10, 500)
-        self.renderizar_texto("Chances: " + str(self.chance._mostrar_chance()), WHITE, BLACK, 10, 540)
+        self.renderizar_texto("Pokémon: " + str(self.pontuacao), WHITE, BLACK, 10, 500)
+        self.renderizar_texto("Pokebolas: " + str(self.chance._mostrar_chance()), WHITE, BLACK, 10, 540)
 
         minutos = self.tempo_restante // 60000
         segundos = (self.tempo_restante % 60000) // 1000

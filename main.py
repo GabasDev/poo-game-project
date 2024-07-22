@@ -4,11 +4,9 @@ from src.jogo import Jogo
 def principal():
     pygame.init()
     pygame.mixer.init()  
-
-    # Carregar e tocar a música de fundo
     try:
         pygame.mixer.music.load('static/sons/musica_fundo.mp3')
-        pygame.mixer.music.play(-1)  # -1 para tocar em loop
+        pygame.mixer.music.play(-1)  
     except pygame.error as e:
         print(f"Erro ao carregar a música de fundo: {e}")
 
@@ -19,7 +17,7 @@ def principal():
     while not terminado:
         terminado = jogo.processar_eventos()
         jogo.executar_logica()
-        jogo.mostrar_frame()  # Corrigido para não passar argumentos
+        jogo.mostrar_frame() 
         clock.tick(60)
 
     pygame.quit()
