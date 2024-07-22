@@ -35,5 +35,5 @@ class Pokebola(pygame.sprite.Sprite):
 
     def _lidar_com_fim_de_jogo(self):
         """Perde a chance e remove a Pokébola do grupo."""
-        self.chance.perdeuChance()
+        self.chance._perdeu_chance()
         self.kill()

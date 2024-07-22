@@ -110,7 +110,7 @@ class Jogo:
 
             self.atualizar_tempo_restante()
 
-            if self.tempo_restante == 0 or self.chance.mostrarChance() == 0 or self.pontuacao >= self.tempoMaximo:
+            if self.tempo_restante == 0 or self.chance._mostrar_chance() == 0 or self.pontuacao >= self.tempoMaximo:
                 self.jogo_ativo = False
 
     def renderizar_texto(self, texto, cor, sombra_cor, pos_x, pos_y):
@@ -124,7 +124,7 @@ class Jogo:
         self.todos_sprites.draw(self.tela)
 
         self.renderizar_texto("Pontuação: " + str(self.pontuacao), WHITE, BLACK, 10, 500)
-        self.renderizar_texto("Chances: " + str(self.chance.mostrarChance()), WHITE, BLACK, 10, 540)
+        self.renderizar_texto("Chances: " + str(self.chance._mostrar_chance()), WHITE, BLACK, 10, 540)
 
         minutos = self.tempo_restante // 60000
         segundos = (self.tempo_restante % 60000) // 1000
