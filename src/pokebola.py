@@ -1,7 +1,7 @@
 import pygame
 
 class Pokebola(pygame.sprite.Sprite):
-    def __init__(self, x, y, dx, dy, chance):
+    def __init__(self, x, y, dx, dy, chance, jogo):
         super().__init__()
         self.image = pygame.image.load('static/imagens/pokebola.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (30, 30))
@@ -9,6 +9,7 @@ class Pokebola(pygame.sprite.Sprite):
         self.dx = dx
         self.dy = dy
         self.chance = chance
+        self.jogo = jogo
 
         self.tempo_inicio = pygame.time.get_ticks()  # Tempo inicial
         self.tempo_limite = 1000  # Tempo limite em milissegundos
@@ -37,3 +38,4 @@ class Pokebola(pygame.sprite.Sprite):
         """Perde a chance e remove a Pokébola do grupo."""
         self.chance._perdeu_chance()
         self.kill()
+        self.jogo.pokebola_em_movimento = False  # Atualize o estado na instância de Jogo

@@ -1,4 +1,5 @@
 class Chance:
+    
     def __init__(self):
         self.chance = 3
 

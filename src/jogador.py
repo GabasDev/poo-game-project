@@ -6,7 +6,6 @@ class Jogador(pygame.sprite.Sprite):
         self.imagem_segura = pygame.image.load('static/imagens/mao_segura.png').convert_alpha()
         self.imagem_arremessando = pygame.image.load('static/imagens/arremesar.png').convert_alpha()
 
-        # Reduzindo o código ao mínimo necessário para a transformação
         self.imagem_segura = pygame.transform.scale(self.imagem_segura, (50, 50)) 
         self.imagem_arremessando = pygame.transform.scale(self.imagem_arremessando, (50, 50))  
 
