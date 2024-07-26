@@ -11,31 +11,32 @@ class Pokebola(pygame.sprite.Sprite):
         self.chance = chance
         self.jogo = jogo
 
-        self.tempo_inicio = pygame.time.get_ticks()  # Tempo inicial
-        self.tempo_limite = 1000  # Tempo limite em milissegundos
+        self.tempo_inicio = pygame.time.get_ticks()  
+        self.tempo_limite = 1000  
 
     def update(self):
-        """Atualiza a posição e verifica condições de término."""
+        "Atualiza a posição e verifica condições de término."
         self._atualizar_posicao()
         if self._verificar_saida_tela() or self._verificar_tempo_limite():
             self._lidar_com_fim_de_jogo()
 
     def _atualizar_posicao(self):
-        """Atualiza a posição com base na velocidade."""
+        "Atualiza a posição com base na velocidade."
         self.rect.x += self.dx
         self.rect.y += self.dy
 
     def _verificar_saida_tela(self):
-        """Verifica se saiu da tela."""
+        "Verifica se saiu da tela."
         return (self.rect.x > 800 or self.rect.x < 0 or
                 self.rect.y > 600 or self.rect.y < 0)
 
     def _verificar_tempo_limite(self):
-        """Verifica se o tempo limite foi alcançado."""
+        "Verifica se o tempo limite foi alcançado."
         return pygame.time.get_ticks() - self.tempo_inicio > self.tempo_limite
 
     def _lidar_com_fim_de_jogo(self):
-        """Perde a chance e remove a Pokébola do grupo."""
+        "Perde a chance e remove a Pokébola do grupo."
         self.chance._perdeu_chance()
         self.kill()
-        self.jogo.pokebola_em_movimento = False  # Atualize o estado na instância de Jogo
+        self.jogo.pokebola_em_movimento = False 
+        "Atualize o estado na instância de Jogo"
