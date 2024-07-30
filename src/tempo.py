@@ -1,7 +1,7 @@
 import pygame
 
 class Tempo:
-    def init(self, tempoMaximo):
+    def __init__(self, tempoMaximo):
         self.tempoMaximo = tempoMaximo
         self.tempo_inicial = pygame.time.get_ticks()
         self.tempo_restante = self.tempoMaximo * 1000
