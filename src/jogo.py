@@ -5,6 +5,7 @@ from src.pokemon import Pokemon
 from src.pokebola import Pokebola
 from src.chances import Chance
 from src.tempo import Tempo
+from src.mira import Mira
 import random
 
 WHITE = (255, 255, 255)
@@ -26,6 +27,7 @@ class Jogo:
         self.pontuacao = 0
         self.fonte = pygame.font.SysFont('Arial', 30, bold=True)
         self.tempo = Tempo(60)
+        self.mira = Mira('static/imagens/mira.png')
         self.chance = Chance()
         self.jogo_ativo = True
         self.adicionar_pokemon(2)
@@ -156,10 +158,8 @@ class Jogo:
             self.desenhar_medidor_de_forca(forca)
 
         "Desenhar a mira"
-        mouse_pos = pygame.mouse.get_pos()
-        self.crosshair_rect.center = mouse_pos
-        self.tela.blit(self.crosshair, self.crosshair_rect)
-
+        self.mira.desenhar(self.tela)
+        
         pygame.display.flip()
 
     def desenhar_medidor_de_forca(self, forca):
