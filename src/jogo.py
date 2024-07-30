@@ -4,6 +4,7 @@ from src.mapa import Mapa
 from src.pokemon import Pokemon
 from src.pokebola import Pokebola
 from src.chances import Chance
+from src.tempo import Tempo
 import random
 
 WHITE = (255, 255, 255)
@@ -13,7 +14,7 @@ class Jogo:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
-        
+       
         self.tela = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Capturador de Pokémon")
         self.mapa = Mapa()
@@ -24,13 +25,11 @@ class Jogo:
         self.todos_sprites.add(self.jogador)
         self.pontuacao = 0
         self.fonte = pygame.font.SysFont('Arial', 30, bold=True)
-        self.tempoMaximo = 60 
-        self.tempo_inicial = pygame.time.get_ticks()  
-        self.tempo_restante = self.tempoMaximo * 1000  
+        self.tempo = Tempo(60)
         self.chance = Chance()
         self.jogo_ativo = True
         self.adicionar_pokemon(2)
-        
+       
         try:
             self.som_captura = pygame.mixer.Sound('static/sons/song.mp3')
         except pygame.error as e:
@@ -44,7 +43,7 @@ class Jogo:
 
         "Carregar a imagem da mira e redimensionar"
         self.crosshair = pygame.image.load('static/imagens/mira.png')
-        self.crosshair = pygame.transform.scale(self.crosshair, (32, 32)) 
+        self.crosshair = pygame.transform.scale(self.crosshair, (32, 32))
         self.crosshair_rect = self.crosshair.get_rect()
 
         "Ocultar o cursor padrão"
@@ -69,10 +68,10 @@ class Jogo:
             if evento.type == pygame.KEYUP:
                 if evento.key == pygame.K_SPACE and self.arremesso_ativo:
                     self._arremessar()
-                    
+                   
             if evento.type == pygame.USEREVENT + 1:
-                self.jogador.voltar_a_segurar() 
-                
+                self.jogador.voltar_a_segurar()
+               
             if not self.jogo_ativo:
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
@@ -84,7 +83,7 @@ class Jogo:
     def _arremessar(self):
         if self.pokebola_em_movimento:  
             return
-        
+       
         tempo_arremesso = (pygame.time.get_ticks() - self.tempo_arremesso_inicio) / 1000.0
         self.arremesso_ativo = False
         forca = min(tempo_arremesso * 10, 100)
@@ -104,11 +103,6 @@ class Jogo:
         "Atualiza o tempo do último arremesso"
         self.ultimo_arremesso = pygame.time.get_ticks()  
 
-    def atualizar_tempo_restante(self):
-        "Atualiza o tempo restante do jogo."
-        tempo_atual = pygame.time.get_ticks()
-        self.tempo_restante = max(0, self.tempoMaximo * 1000 - (tempo_atual - self.tempo_inicial))
-
     def executar_logica(self):
         if self.jogo_ativo:
             teclas = pygame.key.get_pressed()
@@ -126,9 +120,9 @@ class Jogo:
                     self.pokebola_em_movimento = False  
                     print(f"Pokébola posição: ({pokebola.rect.x}, {pokebola.rect.y})")
 
-            self.atualizar_tempo_restante()
+            self.tempo.atualizar_tempo_restante()
 
-            if self.tempo_restante == 0 or self.chance._mostrar_chance() == 0 or self.pontuacao >= self.tempoMaximo:
+            if self.tempo.get_tempo_restante() == 0 or self.chance._mostrar_chance() == 0 or self.pontuacao >= self.tempo.tempoMaximo:
                 self.jogo_ativo = False
 
     def renderizar_texto(self, texto, cor, sombra_cor, pos_x, pos_y):
@@ -145,25 +139,23 @@ class Jogo:
         self.renderizar_texto("Pokémon: " + str(self.pontuacao), WHITE, BLACK, 10, 500)
         self.renderizar_texto("Pokebolas: " + str(self.chance._mostrar_chance()), WHITE, BLACK, 10, 540)
 
-        minutos = self.tempo_restante // 60000
-        segundos = (self.tempo_restante % 60000) // 1000
-        tempo_texto = f"Tempo: {minutos:02}:{segundos:02}"
+        tempo_texto = self.tempo.formatar_tempo()
         self.renderizar_texto(tempo_texto, WHITE, BLACK, 600, 540)
 
         if not self.jogo_ativo:
-            mensagem = "Parabéns! Você capturou todos os Pokémon!" if self.pontuacao >= self.tempoMaximo else "Game Over! Você ficou sem chances."
+            mensagem = "Parabéns! Você capturou todos os Pokémon!" if self.pontuacao >= self.tempo.tempoMaximo else "Game Over! Você ficou sem chances."
             self.renderizar_texto(mensagem, WHITE, BLACK, 400 - self.fonte.size(mensagem)[0] // 2, 300 - self.fonte.size(mensagem)[1] // 2)
 
             mensagem_reiniciar = "Pressione R para tentar novamente ou Q para sair."
             self.renderizar_texto(mensagem_reiniciar, WHITE, BLACK, 400 - self.fonte.size(mensagem_reiniciar)[0] // 2, 350 - self.fonte.size(mensagem_reiniciar)[1] // 2)
 
-        " Desenhar o medidor de força"
+        "Desenhar o medidor de força"
         if self.arremesso_ativo:
             tempo_arremesso = (pygame.time.get_ticks() - self.tempo_arremesso_inicio) / 1000.0
             forca = min(tempo_arremesso * 50, 100)
             self.desenhar_medidor_de_forca(forca)
 
-        " Desenhar a mira"
+        "Desenhar a mira"
         mouse_pos = pygame.mouse.get_pos()
         self.crosshair_rect.center = mouse_pos
         self.tela.blit(self.crosshair, self.crosshair_rect)
@@ -176,3 +168,4 @@ class Jogo:
         largura = (forca / 100) * largura_maxima
         pygame.draw.rect(self.tela, WHITE, (300, 500, largura_maxima, altura), 2)
         pygame.draw.rect(self.tela, WHITE, (300, 500, largura, altura))
+

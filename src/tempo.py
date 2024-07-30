@@ -1,3 +1,5 @@
+import pygame
+
 class Tempo:
     def init(self, tempoMaximo):
         self.tempoMaximo = tempoMaximo
