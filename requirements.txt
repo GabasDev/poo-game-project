@@ -1,0 +1,2 @@
+# pra consiguir rodar o jogo baixe essa versão do pygame
+pygame==2.6.0
