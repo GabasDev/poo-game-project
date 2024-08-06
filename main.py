@@ -6,6 +6,7 @@ def principal():
     pygame.mixer.init()  
     try:
         pygame.mixer.music.load('static/sons/musica_fundo.mp3')
+        pygame.mixer.music.set_volume(0.05)
         pygame.mixer.music.play(-1)  
     except pygame.error as e:
         print(f"Erro ao carregar a musica de fundo: {e}")
