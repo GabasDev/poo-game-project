@@ -36,6 +36,7 @@ class Jogo:
        
         try:
             self.som_captura = pygame.mixer.Sound('static/sons/song.mp3')
+            self.som_captura.set_volume(0.05)
         except pygame.error as e:
             print(f"Erro ao carregar o som: {e}")
 
