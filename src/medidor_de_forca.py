@@ -1,7 +1,7 @@
 import pygame
 
 class MedidorDeForca:
-    def init(self):
+    def __init__(self):
         self.arremesso_ativo = False
         self.tempo_arremesso_inicio = None
 

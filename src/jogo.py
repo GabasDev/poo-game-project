@@ -6,6 +6,7 @@ from src.pokebola import Pokebola
 from src.chances import Chance
 from src.tempo import Tempo
 from src.mira import Mira
+from src.medidor_de_forca import MedidorDeForca
 import random
 
 WHITE = (255, 255, 255)
@@ -28,6 +29,7 @@ class Jogo:
         self.fonte = pygame.font.SysFont('Arial', 30, bold=True)
         self.tempo = Tempo(60)
         self.mira = Mira('static/imagens/mira.png')
+        self.medidor_de_forca = MedidorDeForca()
         self.chance = Chance()
         self.jogo_ativo = True
         self.adicionar_pokemon(2)
@@ -37,19 +39,9 @@ class Jogo:
         except pygame.error as e:
             print(f"Erro ao carregar o som: {e}")
 
-        self.arremesso_ativo = False
-        self.tempo_arremesso_inicio = None
         self.pokebola_em_movimento = False  
         self.delay_arremesso = 2000  
         self.ultimo_arremesso = pygame.time.get_ticks()  
-
-        "Carregar a imagem da mira e redimensionar"
-        self.crosshair = pygame.image.load('static/imagens/mira.png')
-        self.crosshair = pygame.transform.scale(self.crosshair, (32, 32))
-        self.crosshair_rect = self.crosshair.get_rect()
-
-        "Ocultar o cursor padrão"
-        pygame.mouse.set_visible(False)
 
     def adicionar_pokemon(self, quantidade):
         for _ in range(quantidade):
@@ -63,12 +55,11 @@ class Jogo:
                 return True
 
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE and not self.arremesso_ativo and not self.pokebola_em_movimento:
-                    self.arremesso_ativo = True
-                    self.tempo_arremesso_inicio = pygame.time.get_ticks()  
+                if evento.key == pygame.K_SPACE and not self.medidor_de_forca.arremesso_ativo and not self.pokebola_em_movimento:
+                    self.medidor_de_forca.iniciar_arremesso ()
 
             if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_SPACE and self.arremesso_ativo:
+                if evento.key == pygame.K_SPACE and self.medidor_de_forca.arremesso_ativo:
                     self._arremessar()
                    
             if evento.type == pygame.USEREVENT + 1:
@@ -86,9 +77,8 @@ class Jogo:
         if self.pokebola_em_movimento:  
             return
        
-        tempo_arremesso = (pygame.time.get_ticks() - self.tempo_arremesso_inicio) / 1000.0
-        self.arremesso_ativo = False
-        forca = min(tempo_arremesso * 10, 100)
+        forca = self.medidor_de_forca.calcular_forca()
+        self.medidor_de_forca.finalizar_arremesso()
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
         dx, dy = mouse_x - self.jogador.rect.x, mouse_y - self.jogador.rect.y
@@ -151,21 +141,9 @@ class Jogo:
             mensagem_reiniciar = "Pressione R para tentar novamente ou Q para sair."
             self.renderizar_texto(mensagem_reiniciar, WHITE, BLACK, 400 - self.fonte.size(mensagem_reiniciar)[0] // 2, 350 - self.fonte.size(mensagem_reiniciar)[1] // 2)
 
-        "Desenhar o medidor de força"
-        if self.arremesso_ativo:
-            tempo_arremesso = (pygame.time.get_ticks() - self.tempo_arremesso_inicio) / 1000.0
-            forca = min(tempo_arremesso * 50, 100)
-            self.desenhar_medidor_de_forca(forca)
-
         "Desenhar a mira"
         self.mira.desenhar(self.tela)
+        "Desenhar o medidor de força"
+        self.medidor_de_forca.desenhar(self.tela)
         
         pygame.display.flip()
-
-    def desenhar_medidor_de_forca(self, forca):
-        largura_maxima = 200
-        altura = 20
-        largura = (forca / 100) * largura_maxima
-        pygame.draw.rect(self.tela, WHITE, (300, 500, largura_maxima, altura), 2)
-        pygame.draw.rect(self.tela, WHITE, (300, 500, largura, altura))
-
