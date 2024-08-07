@@ -1,4 +1,3 @@
-```markdown
 # Pokémon Go 2
 
 ## Descrição do Projeto
