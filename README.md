@@ -1,3 +1,4 @@
+```markdown
 # Pokémon Go 2
 
 ## Descrição do Projeto
@@ -53,6 +54,11 @@ O **Pokémon Go 2** é um jogo desenvolvido com técnicas de orientação a obje
 
 ## Capturas de Tela
 
+![Tela do Jogo 1](static/imagens/print_game_foca.jpeg)
+*Tela do Jogo 1*
+
+![Tela do Jogo 2](static/imagens/print_game.jpeg)
+*Tela do Jogo 2*
 
 ## Contribuições
 Contribuições são bem-vindas! Se você deseja contribuir para este projeto, siga estas etapas:
