@@ -18,3 +18,6 @@ class Tempo:
         minutos = self.tempo_restante // 60000
         segundos = (self.tempo_restante % 60000) // 1000
         return f"Tempo: {minutos:02}:{segundos:02}"
+    
+    def incrementar(self, segundos):
+        self.tempo_inicial += segundos * 1000

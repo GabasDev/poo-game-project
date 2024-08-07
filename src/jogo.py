@@ -108,6 +108,7 @@ class Jogo:
                     if hasattr(self, 'som_captura'):
                         self.som_captura.play()  
                     self.adicionar_pokemon(1)
+                    self.tempo.incrementar(1)
                     pokebola.kill()
                     "Permitir o lançamento de outra pokébola após a colisao"
                     self.pokebola_em_movimento = False  
