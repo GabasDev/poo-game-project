@@ -1,2 +1,2 @@
 # poo-game-project
-Projeto acadêmico da disciplina de Programação Orientada a Objetos (POO), onde desenvolvemos um jogo. Este projeto tem como objetivo aplicar os conceitos aprendidos na disciplina.
+Este projeto em questão tem como objetivo aplicar os conceitos aprendidos na disciplina de Programação Orientada a Objetos (POO). Desenvolvemos um jogo com a temática Pokemón, utilizando a estética de pixelart. O jogo em questão consiste em capturar pokemóns, que surgem aleatoriamente na tela. Para a captura é usado uma barra de força, para que o jogador lance a pokebola com mais precisão. Também foi incluído um sistema de pontuação, assim como efeitos sonoros por todo o jogo.
