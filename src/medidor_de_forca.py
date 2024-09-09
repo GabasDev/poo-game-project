@@ -1,5 +1,6 @@
 import pygame
 
+
 class MedidorDeForca:
     def __init__(self):
         self.arremesso_ativo = False
@@ -19,9 +20,22 @@ class MedidorDeForca:
         return 0
 
     def desenhar(self, tela):
-        forca = self.calcular_forca()
         largura_maxima = 200
-        altura = 20
+        largura = 0
+        forca = self.calcular_forca()
         largura = (forca / 20) * largura_maxima
-        pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura_maxima, altura), 2)
-        pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura, altura))
+        altura = 20
+        if largura_maxima > largura:
+            pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura_maxima, altura), 2)
+            pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura, altura))
+            
+        else:
+            pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura_maxima, altura), 2)
+            pygame.draw.rect(tela, (255, 255, 255), (300, 500, largura_maxima, altura))
+        
+        
+        
+        
+        
+        
+        
