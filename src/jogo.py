@@ -7,6 +7,7 @@ from src.chances import Chance
 from src.tempo import Tempo
 from src.mira import Mira
 from src.medidor_de_forca import MedidorDeForca
+from src.Pok_pikachu import Pikachu
 import random
 
 WHITE = (255, 255, 255)
@@ -50,7 +51,7 @@ class Jogo:
 
     def adicionar_pokemon(self, quantidade):
         """Adiciona Pokémon ao grupo de sprites"""
-        pokemon_classes = []
+        pokemon_classes = [Pikachu]
         for _ in range(quantidade):
             PokemonClass = random.choice(pokemon_classes)
             novo_pokemon = PokemonClass(self.pokemons)
