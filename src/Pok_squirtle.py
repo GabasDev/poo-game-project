@@ -3,8 +3,10 @@ import pygame
 import random
 
 class Squirtle(Pokemon):
-    def _init_(self, lista_pokemons):
-        super()._init_(lista_pokemons, "static/imagens/squirtle.png")
+    def __init__(self, lista_pokemons):
+        super().__init__(lista_pokemons, "static/imagens/squirtle.png")
+        # self.image = pygame.transform.scale(self.image, (50, 50))
+        # self.rect = self.image.get_rect()
         self._posicionar()
         self.velocidade = random.randint(1, 2)
 

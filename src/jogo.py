@@ -17,7 +17,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 class Jogo:
-    def _init_(self):
+    def __init__(self):
         pygame.init()
         pygame.mixer.init()
 
@@ -81,7 +81,7 @@ class Jogo:
             if not self.jogo_ativo:
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_r:
-                        self._init_()
+                        self.__init__()
                     elif evento.key == pygame.K_q:
                         return True
         return False
@@ -96,7 +96,7 @@ class Jogo:
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
         dx, dy = mouse_x - self.jogador.rect.x, mouse_y - self.jogador.rect.y
-        distancia = (dx * 2 + dy * 2) ** 0.5
+        distancia = (dx ** 2 + dy ** 2) ** 0.5
         dx, dy = (dx / distancia) * forca, (dy / distancia) * forca
 
         self.jogador.arremessar()
