@@ -7,7 +7,10 @@ from src.chances import Chance
 from src.tempo import Tempo
 from src.mira import Mira
 from src.medidor_de_forca import MedidorDeForca
+from src.Pok_bulbasaur import Bulbasaur
 from src.Pok_pikachu import Pikachu
+from src.Pok_squirtle import Squirtle
+from src.Pok_charmander import Charmander
 import random
 
 WHITE = (255, 255, 255)
@@ -51,7 +54,7 @@ class Jogo:
 
     def adicionar_pokemon(self, quantidade):
         """Adiciona Pokémon ao grupo de sprites"""
-        pokemon_classes = [Pikachu]
+        pokemon_classes = [Pikachu, Charmander, Squirtle, Bulbasaur]
         for _ in range(quantidade):
             PokemonClass = random.choice(pokemon_classes)
             novo_pokemon = PokemonClass(self.pokemons)
