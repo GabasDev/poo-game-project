@@ -125,17 +125,19 @@ class Jogo:
                 if pokemon_capturado:
                     pokemon = pokemon_capturado[0]  
                     if hasattr(pokemon, 'nome') and pokemon.nome == "Gengar":  
-                        self.pontuacao -= 1  
+                        self.pontuacao -= 1
+                        self.tempo.decrementar(1)  
                     elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
-                        self.pontuacao += 5  
+                        self.pontuacao += 5
+                        self.tempo.incrementar(5)  
                     else:
-                        self.pontuacao += 1    
+                        self.pontuacao += 1
+                        self.tempo.incrementar(1)    
 
                     if hasattr(self, 'som_captura'):
                         self.som_captura.play()
 
                     self.adicionar_pokemon(1)  
-                    self.tempo.incrementar(1)
                     pokebola.kill() 
                     self.pokebola_em_movimento = False
                     print(f"Pokébola posição: ({pokebola.rect.x}, {pokebola.rect.y})")

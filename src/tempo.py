@@ -21,3 +21,6 @@ class Tempo:
     
     def incrementar(self, segundos):
         self.tempo_inicial += segundos * 1000
+    
+    def decrementar(self, segundos):
+        self.tempo_inicial -= segundos * 1000
