@@ -11,6 +11,8 @@ from src.Pok_bulbasaur import Bulbasaur
 from src.Pok_pikachu import Pikachu
 from src.Pok_squirtle import Squirtle
 from src.Pok_charmander import Charmander
+from src.Pok_gengar import Gengar
+from src.Pok_alakazam import Alakazam
 import random
 
 WHITE = (255, 255, 255)
@@ -54,7 +56,7 @@ class Jogo:
 
     def adicionar_pokemon(self, quantidade):
         """Adiciona Pokémon ao grupo de sprites"""
-        pokemon_classes = [Pikachu, Charmander, Squirtle, Bulbasaur]
+        pokemon_classes = [Pikachu, Charmander, Squirtle, Bulbasaur, Gengar, Alakazam]
         for _ in range(quantidade):
             PokemonClass = random.choice(pokemon_classes)
             novo_pokemon = PokemonClass(self.pokemons)
@@ -115,18 +117,26 @@ class Jogo:
             self.jogador.atualizar(teclas)
             self.pokebolas.update()
 
-            "Atualizar o movimento de todos os Pokémons"
             for pokemon in self.pokemons:
                 pokemon.mover()
 
             for pokebola in self.pokebolas:
-                if pygame.sprite.spritecollide(pokebola, self.pokemons, True):
-                    self.pontuacao += 1
+                pokemon_capturado = pygame.sprite.spritecollide(pokebola, self.pokemons, True)
+                if pokemon_capturado:
+                    pokemon = pokemon_capturado[0]  
+                    if hasattr(pokemon, 'nome') and pokemon.nome == "Gengar":  
+                        self.pontuacao -= 1  
+                    elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
+                        self.pontuacao += 5  
+                    else:
+                        self.pontuacao += 1    
+
                     if hasattr(self, 'som_captura'):
                         self.som_captura.play()
-                    self.adicionar_pokemon(1)
+
+                    self.adicionar_pokemon(1)  
                     self.tempo.incrementar(1)
-                    pokebola.kill()
+                    pokebola.kill() 
                     self.pokebola_em_movimento = False
                     print(f"Pokébola posição: ({pokebola.rect.x}, {pokebola.rect.y})")
 
