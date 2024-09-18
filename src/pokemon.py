@@ -8,7 +8,7 @@ class Pokemon(pygame.sprite.Sprite):
         self.image = pygame.image.load(caminho_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
-
+        self.pontuacao = 1
     def _posicionar(self):
         """Posiciona o Pokémon em uma posição aleatória, garantindo que não haja colisão com outros Pokémons."""
         if self.rect is not None:

@@ -10,8 +10,7 @@ class Ditto(Pokemon):
         self.nome = "Ditto"
         self.tempo_teleporte = pygame.time.get_ticks()
         self.proximo_teleporte = random.randint(1000, 3000)
-        self.pontuacao = random.randint(-10, 10)  # Gera a pontuação aleatória
-
+        self.pontuacao = random.randint(-10, 10)  
     def mover(self):
         """Teletransporta o Pokémon após um intervalo de tempo aleatório entre 1 e 3 segundos."""
         tempo = pygame.time.get_ticks()

@@ -14,6 +14,9 @@ class Pokebola(pygame.sprite.Sprite):
         self.tempo_inicio = pygame.time.get_ticks()
         self.tempo_limite = 1000
 
+    def capturar_pokemon(self, pokemon):
+        self.jogo.pontuacao += 0
+        
     def update(self):
         "Atualiza a posição e verifica condições de término."
         self._atualizar_posicao()

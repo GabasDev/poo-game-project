@@ -120,7 +120,6 @@ class Jogo:
         self.ultimo_arremesso = pygame.time.get_ticks()
 
     def executar_logica(self):
-        """Executa a lógica do jogo"""
         if self.jogo_ativo:
             teclas = pygame.key.get_pressed()
             self.jogador.atualizar(teclas)
@@ -133,23 +132,9 @@ class Jogo:
                 pokemon_capturado = pygame.sprite.spritecollide(pokebola, self.pokemons, True)
                 if pokemon_capturado:
                     pokemon = pokemon_capturado[0]  
-                    if hasattr(pokebola, 'capturar_pokemon'):
-                        pokebola.capturar_pokemon(pokemon)
-                    else:
-                        if hasattr(pokemon, 'nome') and pokemon.nome == "Ditto":
-                            pontuacao_Ditto = random.randint(-10, 10)  # Pontuação aleatória entre -10 e 10
-                            self.pontuacao += pontuacao_Ditto
-                            self.tempo.decrementar(1)  # Ajuste o tempo conforme necessário
-                        elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
-                            self.pontuacao += 5
-                            self.tempo.incrementar(5)  
-                        else:
-                            self.pontuacao += 1
-                            self.tempo.incrementar(1)    
-
-                    if hasattr(self, 'som_captura'):
-                        self.som_captura.play()
-
+                    pokebola.capturar_pokemon(pokemon)   
+                    self.som_captura.play()
+                    
                     self.adicionar_pokemon(1)  
                     pokebola.kill() 
                     self.pokebola_em_movimento = False
