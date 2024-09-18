@@ -10,7 +10,6 @@ class Pokebola(pygame.sprite.Sprite):
         self.dy = dy
         self.chance = chance
         self.jogo = jogo
-
         self.tempo_inicio = pygame.time.get_ticks()
         self.tempo_limite = 1000
 

@@ -134,7 +134,7 @@ class Jogo:
                     pokemon = pokemon_capturado[0]  
                     pokebola.capturar_pokemon(pokemon)   
                     self.som_captura.play()
-                    
+        
                     self.adicionar_pokemon(1)  
                     pokebola.kill() 
                     self.pokebola_em_movimento = False
