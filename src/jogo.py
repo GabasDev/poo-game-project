@@ -2,7 +2,8 @@ import pygame
 from src.jogador import Jogador
 from src.mapa import Mapa
 from src.pokemon import Pokemon
-from src.pokebola import PokebolaComum, PokebolaEspecial
+from src.pokebola_comum import PokebolaComum
+from src.pokebola_especial import PokebolaEspecial
 from src.chances import Chance
 from src.tempo import Tempo
 from src.mira import Mira
@@ -11,7 +12,7 @@ from src.Pok_bulbasaur import Bulbasaur
 from src.Pok_pikachu import Pikachu
 from src.Pok_squirtle import Squirtle
 from src.Pok_charmander import Charmander
-from src.Pok_gengar import Gengar
+from src.Pok_ditto import Ditto
 from src.Pok_alakazam import Alakazam
 import random
 
@@ -57,7 +58,7 @@ class Jogo:
 
     def adicionar_pokemon(self, quantidade):
         """Adiciona Pokémon ao grupo de sprites"""
-        pokemon_classes = [Pikachu, Charmander, Squirtle, Bulbasaur, Gengar, Alakazam]
+        pokemon_classes = [Pikachu, Charmander, Squirtle, Bulbasaur, Ditto, Alakazam]
         for _ in range(quantidade):
             PokemonClass = random.choice(pokemon_classes)
             novo_pokemon = PokemonClass(self.pokemons)
@@ -135,9 +136,9 @@ class Jogo:
                     if hasattr(pokebola, 'capturar_pokemon'):
                         pokebola.capturar_pokemon(pokemon)
                     else:
-                        if hasattr(pokemon, 'nome') and pokemon.nome == "Gengar":
-                            pontuacao_gengar = random.randint(-10, 10)  # Pontuação aleatória entre -10 e 10
-                            self.pontuacao += pontuacao_gengar
+                        if hasattr(pokemon, 'nome') and pokemon.nome == "Ditto":
+                            pontuacao_Ditto = random.randint(-10, 10)  # Pontuação aleatória entre -10 e 10
+                            self.pontuacao += pontuacao_Ditto
                             self.tempo.decrementar(1)  # Ajuste o tempo conforme necessário
                         elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
                             self.pontuacao += 5

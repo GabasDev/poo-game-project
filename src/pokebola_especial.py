@@ -1,3 +1,4 @@
+import pygame
 from .pokebola import Pokebola
 
 class PokebolaEspecial(Pokebola):
