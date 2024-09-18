@@ -11,15 +11,19 @@ class PokebolaEspecial(Pokebola):
         """Método para capturar um Pokémon e atualizar a pontuação com o dobro"""
         if hasattr(pokemon, 'nome'):
             if pokemon.nome == "Ditto":
-                self.jogo.pontuacao += pokemon.pontuacao * 2  
-                self.jogo.tempo.decrementar(1)
+                self.jogo.pontuacao += pokemon.pontuacao * 2 
+                if pokemon.pontuacao >= 0:  
+                    self.jogo.tempo.incrementar(2)
+                else: 
+                    self.jogo.tempo.decrementar(2)
             elif pokemon.nome == "Alakazam":
                 self.jogo.pontuacao += pokemon.pontuacao * 2
                 self.jogo.tempo.incrementar(5)
             else:
-                self.jogo.pontuacao += pokemon.pontuacao*2
+                self.jogo.pontuacao += pokemon.pontuacao * 2
                 self.jogo.tempo.incrementar(2)
-                print(f"{self.jogo.pontuacao}") 
+                print(f"{self.jogo.pontuacao}")
+
 
         if hasattr(self.jogo, 'som_captura'):
             self.jogo.som_captura.play() 

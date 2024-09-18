@@ -12,8 +12,11 @@ class PokebolaComum(Pokebola):
         """Método para capturar um Pokémon e atualizar a pontuação com base na Pokébola Comum"""
         if hasattr(pokemon, 'nome'):
             if pokemon.nome == "Ditto":
-                self.jogo.pontuacao += pokemon.pontuacao
-                self.jogo.tempo.decrementar(1)
+                self.jogo.pontuacao += pokemon.pontuacao 
+                if pokemon.pontuacao >= 0:  
+                    self.jogo.tempo.incrementar(1)
+                else: 
+                    self.jogo.tempo.decrementar(1)
             elif pokemon.nome == "Alakazam":
                 self.jogo.pontuacao += pokemon.pontuacao
                 self.jogo.tempo.incrementar(5)

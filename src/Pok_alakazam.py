@@ -4,7 +4,7 @@ import random
 
 class Alakazam(Pokemon):
     def __init__(self, lista_pokemons):
-        super().__init__(lista_pokemons, "static/imagens/Alakazam.png")
+        super().__init__(lista_pokemons, "static/imagens/alakazam.png")
         self._posicionar()
         self.velocidade = random.randint(1, 4)
         self.nome = "Alakazam"
