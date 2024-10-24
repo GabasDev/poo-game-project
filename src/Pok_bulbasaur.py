@@ -11,7 +11,8 @@ class Bulbasaur(Pokemon):
         self._posicionar()
         self.velocidade = random.randint(1, 3)
         "Inicia com um ângulo aleatório"
-        self.angulo = random.uniform(0, 2 * math.pi)  
+        self.angulo = random.uniform(0, 2 * math.pi)
+        self.nome = "Bulbasaur"  
     def mover(self):
         "Movimento circular"
         centro_x, centro_y = 400, 300

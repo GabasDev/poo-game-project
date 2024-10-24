@@ -8,6 +8,10 @@ class Pokemon(pygame.sprite.Sprite):
         self.image = pygame.image.load(caminho_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
+        self.tempo_inicio = pygame.time.get_ticks()  # Armazena o tempo de criação do Pokémon
+        self.tempo_limite = 5000  # Limite de tempo em milissegundos (5 segundos)
+
+        self._posicionar()
 
     def _posicionar(self):
         """Posiciona o Pokémon em uma posição aleatória, garantindo que não haja colisão com outros Pokémons."""
@@ -29,3 +33,8 @@ class Pokemon(pygame.sprite.Sprite):
     def mover(self):
         """Método para ser sobrescrito pelas subclasses, definindo o movimento do Pokémon."""
         pass
+
+    def verificar_tempo(self):
+        """Verifica se o Pokémon ultrapassou o tempo limite e deve ser removido."""
+        if pygame.time.get_ticks() - self.tempo_inicio > self.tempo_limite:
+            self.kill()

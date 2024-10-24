@@ -12,6 +12,7 @@ class Pikachu(Pokemon):
         self.velocidade_x = random.randint(1, 3)
         "Velocidade aleatória vertical"  
         self.velocidade_y = random.randint(1, 3)  
+        self.nome = "Pikachu"
 
     def mover(self):
         ' Movimento horizontal'

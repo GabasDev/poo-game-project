@@ -2,7 +2,7 @@ import pygame
 from src.jogador import Jogador
 from src.mapa import Mapa
 from src.pokemon import Pokemon
-from src.pokebola import Pokebola
+from src.pokebola import PokebolaComum, PokebolaEspecial
 from src.chances import Chance
 from src.tempo import Tempo
 from src.mira import Mira
@@ -50,9 +50,10 @@ class Jogo:
         except pygame.error as e:
             print(f"Erro ao carregar o som: {e}")
 
-        self.pokebola_em_movimento = False  
-        self.delay_arremesso = 2000  
+        self.pokebola_em_movimento = False
+        self.delay_arremesso = 2000
         self.ultimo_arremesso = pygame.time.get_ticks()
+        self.arremessos = 0  # Contador de arremessos
 
     def adicionar_pokemon(self, quantidade):
         """Adiciona Pokémon ao grupo de sprites"""
@@ -102,7 +103,14 @@ class Jogo:
         dx, dy = (dx / distancia) * forca, (dy / distancia) * forca
 
         self.jogador.arremessar()
-        pokebola = Pokebola(self.jogador.rect.x, self.jogador.rect.y, dx, dy, self.chance, self)
+        self.arremessos += 1  # Incrementa o contador de arremessos
+
+        # Alterna entre Pokébola Comum e Especial
+        if self.arremessos % 5 == 0:
+            pokebola = PokebolaEspecial(self.jogador.rect.x, self.jogador.rect.y, dx, dy, self.chance, self)
+        else:
+            pokebola = PokebolaComum(self.jogador.rect.x, self.jogador.rect.y, dx, dy, self.chance, self)
+        
         self.pokebolas.add(pokebola)
         self.todos_sprites.add(pokebola)
         pygame.time.set_timer(pygame.USEREVENT + 1, 300)
@@ -124,15 +132,19 @@ class Jogo:
                 pokemon_capturado = pygame.sprite.spritecollide(pokebola, self.pokemons, True)
                 if pokemon_capturado:
                     pokemon = pokemon_capturado[0]  
-                    if hasattr(pokemon, 'nome') and pokemon.nome == "Gengar":  
-                        self.pontuacao -= 1
-                        self.tempo.decrementar(1)  
-                    elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
-                        self.pontuacao += 5
-                        self.tempo.incrementar(5)  
+                    if hasattr(pokebola, 'capturar_pokemon'):
+                        pokebola.capturar_pokemon(pokemon)
                     else:
-                        self.pontuacao += 1
-                        self.tempo.incrementar(1)    
+                        if hasattr(pokemon, 'nome') and pokemon.nome == "Gengar":
+                            pontuacao_gengar = random.randint(-10, 10)  # Pontuação aleatória entre -10 e 10
+                            self.pontuacao += pontuacao_gengar
+                            self.tempo.decrementar(1)  # Ajuste o tempo conforme necessário
+                        elif hasattr(pokemon, 'nome') and pokemon.nome == "Alakazam":
+                            self.pontuacao += 5
+                            self.tempo.incrementar(5)  
+                        else:
+                            self.pontuacao += 1
+                            self.tempo.incrementar(1)    
 
                     if hasattr(self, 'som_captura'):
                         self.som_captura.play()

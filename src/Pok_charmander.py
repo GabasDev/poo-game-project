@@ -9,6 +9,7 @@ class Charmander(Pokemon):
         # self.rect = self.image.get_rect()
         self._posicionar()
         self.velocidade = random.randint(1, 4)
+        self.nome = "Charmander"  
 
     def mover(self):
         "Movimento diagonal"
