@@ -1,19 +1,13 @@
-#include <SDL.h>
-#include <SDL_image.h>
 #include <iostream>
 
 class Pokebola {
 public:
-    Pokebola(int x, int y, int dx, int dy) {
+    Pokebola(int x, int y, int dx, int dy)
+        : dx(dx), dy(dy), tempoLimite(1000), tempoInicio(0) {
         rect.x = x;
         rect.y = y;
         rect.w = 30; // largura da Pokébola
         rect.h = 30; // altura da Pokébola
-        this->dx = dx;
-        this->dy = dy;
-        imagem = IMG_Load("static/imagens/pokebola.png");
-        tempoInicio = SDL_GetTicks();
-        tempoLimite = 1000; // 1 segundo
     }
 
     void update() {
@@ -24,11 +18,13 @@ public:
     }
 
 private:
-    SDL_Rect rect;
-    SDL_Surface* imagem;
+    struct Rect {
+        int x, y, w, h; // Posição e dimensões
+    } rect;
+
     int dx, dy;
-    Uint32 tempoInicio;
-    const Uint32 tempoLimite;
+    unsigned long tempoInicio;
+    const unsigned long tempoLimite;
 
     void atualizarPosicao() {
         rect.x += dx;
@@ -40,11 +36,12 @@ private:
     }
 
     bool verificarTempoLimite() {
-        return (SDL_GetTicks() - tempoInicio > tempoLimite);
+        // Simulação de tempo para o exemplo
+        unsigned long tempoAtual = 0; // Aqui você pode implementar a lógica de tempo atual
+        return (tempoAtual - tempoInicio > tempoLimite);
     }
 
     void lidarComFimDeJogo() {
         std::cout << "Fim de jogo! Pokébola saiu da tela ou excedeu o tempo." << std::endl;
-        // Aqui você deve lidar com a lógica de fim de jogo
     }
 };

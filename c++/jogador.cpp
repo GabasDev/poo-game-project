@@ -1,55 +1,52 @@
-#include <SDL.h>
-#include <SDL_image.h>
 #include <iostream>
 
 class Jogador {
 public:
     Jogador() {
-        // Inicializa o jogador (carregar imagem, etc.)
-        imagemSegura = IMG_Load("static/imagens/mao_segura.png");
-        imagemArremessando = IMG_Load("static/imagens/arremesar.png");
         estado = "segurando";
-        // Configuração inicial da posição
         rect.x = 400;
         rect.y = 570;
-        rect.w = 50; // largura da imagem
-        rect.h = 50; // altura da imagem
+        rect.w = 50; // largura
+        rect.h = 50; // altura
     }
 
-    void atualizar(const Uint8* teclas) {
-        mover(teclas);
+    void atualizar(bool esquerda, bool direita) {
+        mover(esquerda, direita);
         limitarMovimento();
     }
 
     void arremessar() {
         estado = "arremessando";
-        // Aqui você deveria mudar a imagem para "arremessando"
         std::cout << "Arremessando!" << std::endl;
     }
 
     void voltarASegurar() {
         estado = "segurando";
-        // Aqui você deveria mudar a imagem para "segurando"
         std::cout << "Voltando a segurar!" << std::endl;
     }
 
-    void mover(const Uint8* teclas) {
-        if (teclas[SDL_SCANCODE_LEFT]) {
+    void mostrarEstado() const {
+        std::cout << "Estado: " << estado << " | Posição: (" << rect.x << ", " << rect.y << ")" << std::endl;
+    }
+
+private:
+    struct Rect {
+        int x, y, w, h; // Posição e dimensões
+    } rect;
+
+    std::string estado;
+
+    void mover(bool esquerda, bool direita) {
+        if (esquerda) {
             rect.x -= 5;
         }
-        if (teclas[SDL_SCANCODE_RIGHT]) {
+        if (direita) {
             rect.x += 5;
         }
     }
 
     void limitarMovimento() {
         if (rect.x < 0) rect.x = 0;
-        if (rect.x > 800 - rect.w) rect.x = 800 - rect.w;
+        if (rect.x > 800 - rect.w) rect.x = 800 - rect.w; // Limite da tela
     }
-
-private:
-    SDL_Rect rect;
-    SDL_Surface* imagemSegura;
-    SDL_Surface* imagemArremessando;
-    std::string estado;
 };

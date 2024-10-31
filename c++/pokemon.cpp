@@ -1,22 +1,15 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <vector>
 #include <iostream>
-#include <utility>
+#include <vector>
 
 class Pokemon {
 public:
-    Pokemon(std::vector<Pokemon*>& listaPokemons, const std::string& caminhoImagem) 
-        : listaPokemons(listaPokemons) {
-        imagem = IMG_Load(caminhoImagem.c_str());
-        if (imagem == nullptr) {
-            std::cerr << "Erro ao carregar imagem: " << caminhoImagem << std::endl;
-        }
+    Pokemon(std::vector<Pokemon*>& listaPokemons)
+        : listaPokemons(listaPokemons), tempoLimite(5000), tempoInicio(0) {
         posicionar();
     }
 
     virtual ~Pokemon() {
-        SDL_FreeSurface(imagem);
+        // Destrói o Pokémon
     }
 
     virtual void mover() {
@@ -24,46 +17,30 @@ public:
     }
 
     void verificarTempo() {
-        if (SDL_GetTicks() - tempoInicio > tempoLimite) {
+        // Simulação de tempo para o exemplo
+        unsigned long tempoAtual = 0; // Aqui você pode implementar a lógica de tempo atual
+        if (tempoAtual - tempoInicio > tempoLimite) {
             kill();
         }
     }
 
 protected:
-    SDL_Surface* imagem;
-    SDL_Rect rect;
+    struct Rect {
+        int x, y, w, h; // Posição e dimensões
+    } rect;
+
     std::vector<Pokemon*>& listaPokemons;
-    Uint32 tempoInicio = SDL_GetTicks();
-    const Uint32 tempoLimite = 5000; // 5 segundos
+    unsigned long tempoInicio;
+    const unsigned long tempoLimite;
 
 private:
     void posicionar() {
-        rect.x = posicaoAleatoria().first;
-        rect.y = posicaoAleatoria().second;
-
-        while (verificarColisao()) {
-            rect.x = posicaoAleatoria().first;
-            rect.y = posicaoAleatoria().second;
-        }
-    }
-
-    std::pair<int, int> posicaoAleatoria() {
-        int x = rand() % (800 - rect.w);
-        int y = rand() % (300 - rect.h); // Metade superior da tela
-        return std::make_pair(x, y);
-    }
-
-    bool verificarColisao() {
-        for (const auto& pokemon : listaPokemons) {
-            if (pokemon != this && SDL_HasIntersection(&rect, &pokemon->rect)) {
-                return true;
-            }
-        }
-        return false;
+        // Lógica de posicionamento
+        rect.x = rand() % (800 - rect.w);
+        rect.y = rand() % (300 - rect.h); // Metade superior da tela
     }
 
     void kill() {
         std::cout << "Pokémon removido após exceder o tempo limite!" << std::endl;
-        // Lógica para remover Pokémon
     }
 };
